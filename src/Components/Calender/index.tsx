@@ -4,6 +4,7 @@ import Reactcalender from 'react-calendar';
 import { date } from "zod";
 
 import { add, format } from "date-fns"
+import { da } from "date-fns/locale";
 
 
 
@@ -21,6 +22,7 @@ interface indexProps {
 const index: FunctionComponent<indexProps> = () => {
 
     const [date, setDate] = useState<Datatype>({ justDate: null, dateTime: null })
+
 
     const gettime = () => {
 

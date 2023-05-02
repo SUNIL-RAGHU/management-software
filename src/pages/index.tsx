@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Calender from "~/Components/Calender";
+import Login from "~/Components/Calender/login";
 
 
 
@@ -20,9 +21,9 @@ const Home: NextPage = () => {
       </Head>
     
     <main>
-      <Calender>
+    
         
-      </Calender>
+      <Login></Login>
     </main>
     
     </>
