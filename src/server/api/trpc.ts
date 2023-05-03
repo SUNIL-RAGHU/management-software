@@ -43,7 +43,14 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+
+  const {res,req}=_opts
+  return {
+    res,
+    req,
+    prisma,
+   }
+
 };
 
 /**
@@ -56,6 +63,7 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { openStdin } from "process";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
