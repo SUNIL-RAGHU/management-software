@@ -1,8 +1,9 @@
 
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, } from "../trpc";
 
-import { preprocess, z } from 'zod'
+import {  z } from 'zod'
+
 
 import  cookie  from "cookie"
 import { nanoid } from 'nanoid'
@@ -16,12 +17,12 @@ import { TRPCError } from "@trpc/server";
 export const adminRouter = createTRPCRouter({
     Login: publicProcedure
     .input(z.object({ email: z.string(), password: z.string() })) 
-    .mutation(async ({ ctx,input }) => {
+    .mutation(async ({ctx,input}) => {
         
     const { res } = ctx
     const { email, password } = input
 
-    if (email == process.env.ADMIN_EMAIL && password == process.env.ADMIN_PASSWORD) {
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD)  {
 
         const token=await new SignJWT({}).setProtectedHeader({alg:'HS256'}).setJti(nanoid()).setIssuedAt().setExpirationTime('1h').sign(new TextEncoder().encode(getJwtSecretKey()))
     

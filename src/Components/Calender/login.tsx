@@ -2,7 +2,12 @@
 import input from "postcss/lib/input";
 import { useRouter } from 'next/router'
 import { ChangeEvent, FunctionComponent, useState } from "react";
-import { createTRPCRouter } from '~/server/api/trpc';
+import { trpc } from "~/utils/trpc";
+
+
+
+
+
 
 
 
@@ -21,11 +26,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         setInput((prev)=>({...prev,[name]:value}))
     }
 
-    const { mutate: login, error } = createTRPCRouter.Admin.Login.useMutation({
-        onSuccess: () => {
-          router.push('/dashboard')
-        },
-      })
+    const { mutate: login, error,isError } = trpc.admin.Login.useMutation()
 
     return (<div className="flex h-screen  bg-gray-200 ">
     <div className="w-full max-w-xs m-auto bg-stone-50 rounded p-5">   
@@ -49,7 +50,8 @@ const Login: FunctionComponent<LoginProps> = () => {
                 required></input>
             </div>
             <div>          
-              <button className="w-full  bg- bg-gray-200 hover:bg-pink-700 text-black font-bold py-5 px-4 mb-6 rounded" type="submit"></button>
+              <button onClick={(e)=>{e.preventDefault()
+              login(input)}} className="w-full  bg- bg-gray-200 hover:bg-pink-700 text-black font-bold py-5 px-4 mb-6 rounded" type="submit"></button>
             </div>       
           </form>  
           <footer>
