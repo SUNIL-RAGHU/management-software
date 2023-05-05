@@ -8,23 +8,23 @@ export async function middleware(req:NextRequest) {
         console.error(err.message)
     }))
 
-    if (req.nextUrl.pathname.startsWith('/Login') && !verifiedtoken) {
+    if (req.nextUrl.pathname.startsWith('/login') && !verifiedtoken) {
         return;
     }
 
     const url = req.url;
 
-    if(url.includes('/Login')&& verifiedtoken){
+    if(url.includes('/login')&& verifiedtoken){
         return NextResponse.redirect(new URL('/dashboard',req.url))
     }
 
     if(!verifiedtoken){
-        return NextResponse.redirect(new URL('/Login',req.url))
+        return NextResponse.redirect(new URL('/login',req.url))
     }
 
     return
 }
 
 export const config = {
-    matcher: ['/dashboard/', '/Login/'],
+    matcher: ['/dashboard/', '/login'],
   }
