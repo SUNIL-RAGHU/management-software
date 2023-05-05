@@ -4,13 +4,6 @@ import { useRouter } from 'next/router'
 import { ChangeEvent, FunctionComponent, useState } from "react";
 import { trpc } from "~/utils/trpc";
 
-
-
-
-
-
-
-
 interface LoginProps {
     
 }
@@ -26,7 +19,12 @@ const Login: FunctionComponent<LoginProps> = () => {
         setInput((prev)=>({...prev,[name]:value}))
     }
 
-    const { mutate: login, error,isError } = trpc.admin.Login.useMutation()
+    const { mutate: login, error,isError } = trpc.admin.Login.useMutation({
+
+      onSuccess:()=>{
+        router.push('/dashboard')
+      },
+    })
 
     return (<div className="flex h-screen  bg-gray-200 ">
     <div className="w-full max-w-xs m-auto bg-stone-50 rounded p-5">   

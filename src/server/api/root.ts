@@ -9,7 +9,7 @@ import { adminRouter } from "./routers/admin";
  */
 export const appRouter = createTRPCRouter({
 
-admin: adminRouter,
+   admin: adminRouter,
 });
 
 // export type definition of API

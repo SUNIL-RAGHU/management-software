@@ -60,10 +60,11 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { openStdin } from "process";
+import { verifyAuth } from "~/lib/auth";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -79,6 +80,22 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
+const isAdmin = t.middleware(async ({ ctx, next }) => {
+  const { req } = ctx
+  const token = req.cookies['user-token']
+
+  if (!token) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Missing user token' })
+  }
+  const verifiedToken = await verifyAuth(token)
+
+  if (!verifiedToken) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid user token' })
+  }
+
+  return next()
+})
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -93,6 +110,8 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  */
 export const createTRPCRouter = t.router;
 
+
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -101,3 +120,5 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+export const adminProcedure = t.procedure.use(isAdmin)

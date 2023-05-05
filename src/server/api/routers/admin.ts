@@ -1,6 +1,6 @@
 
 
-import { createTRPCRouter, publicProcedure, } from "../trpc";
+import { adminProcedure, createTRPCRouter, publicProcedure, } from "../trpc";
 
 import {  z } from 'zod'
 
@@ -12,6 +12,7 @@ import { env } from "process";
 import { getJwtSecretKey } from "~/lib/auth";
 import { cookies } from "next/dist/client/components/headers";
 import { TRPCError } from "@trpc/server";
+import { sensitiveHeaders } from "http2";
 
 
 export const adminRouter = createTRPCRouter({
@@ -46,6 +47,13 @@ export const adminRouter = createTRPCRouter({
     })
     
     
+
+
     }),
+    sensitive:adminProcedure.mutation(()=>{
+        return 'sensitive'
+    })
+
+
 
 })

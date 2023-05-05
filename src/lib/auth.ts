@@ -2,8 +2,8 @@ import { jwtVerify } from "jose";
 
 
 interface UserJwtPayload {
-    jti: string
-    iat: number
+    jti: string //jwt id
+    iat: number //issuedat
   }
 
 export function getJwtSecretKey():string{
